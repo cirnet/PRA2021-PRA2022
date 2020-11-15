@@ -1,7 +1,7 @@
-{
+[ {
   "id" : 0,
   "firstName" : "Jan",
-  "lastName" : "Polak-181975665",
+  "lastName" : "Polak-332772105",
   "address" : {
     "id" : 0,
     "street" : "poznanska",
@@ -14,7 +14,7 @@
   "subworkers" : [ {
     "id" : 0,
     "firstName" : "Roman",
-    "lastName" : "Polak-1969231513",
+    "lastName" : "Polak1069539396",
     "address" : {
       "id" : 0,
       "street" : "poznanska",
@@ -27,5 +27,20 @@
     "subworkers" : [ ],
     "money" : 100
   } ],
-  "money" : 200
-}
+  "money" : 100
+}, {
+  "id" : 0,
+  "firstName" : "Roman",
+  "lastName" : "Polak1069539396",
+  "address" : {
+    "id" : 0,
+    "street" : "poznanska",
+    "city" : "Poznan",
+    "nr" : "1",
+    "houseNr" : null,
+    "postcode" : "99090"
+  },
+  "managers" : [ ],
+  "subworkers" : [ ],
+  "money" : 100
+} ]

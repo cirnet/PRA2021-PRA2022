@@ -1,13 +1,19 @@
 package pl.edu.amu.pracprog;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import model.Employee;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class JacksonSerialization {
 
@@ -42,6 +48,22 @@ public class JacksonSerialization {
         System.out.println(modifiedJsonString);
     }
 
+    public static void serializeListDemo(ObjectMapper mapper, String fileSuffix) throws IOException {
+        //Set mapper to pretty-print
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        //Create objects to serialize
+        ModelObjectsCreator objectsCreator = new ModelObjectsCreator();
+        List<Employee> employee = objectsCreator.getEmployees();
+
+        //Serialize to file and string
+        mapper.writeValue(new File("result." + fileSuffix), employee);
+        String jsonString = mapper.writeValueAsString(employee);
+
+        logger.info("Printing serialized original object " + fileSuffix);
+        System.out.println(jsonString);
+    }
+
     public static void deserializeDemo(ObjectMapper mapper, String fileSuffix) throws IOException {
         //Deserialized employee object from employees.* file in resources
         InputStream employeeIs = JacksonSerialization.class.getClassLoader().
@@ -59,12 +81,29 @@ public class JacksonSerialization {
         System.out.println(modifiedSerialzied);
     }
 
+    public static void deserializeListDemo(ObjectMapper mapper, String fileSuffix) throws IOException {
+        //Deserialized employee object from employees.* file in resources
+        InputStream employeeIs = JacksonSerialization.class.getClassLoader().
+                getResourceAsStream("employeeList." + fileSuffix);
+
+        //Read value - set class type of serialization
+        List<Employee> deserializedEmployee = mapper.readValue(employeeIs, new TypeReference<List<Employee>>() { });
+
+        System.out.println(deserializedEmployee.size());
+
+    }
+
     public static void main(String[] args) throws IOException {
 
         ObjectMapper jsonMapper = new ObjectMapper();
-        serializeDemo(jsonMapper, "json");
-        deserializeDemo(jsonMapper, "json");
+        jsonMapper.registerModule(new JodaModule());
+        ObjectMapper xmlMapper = new XmlMapper();
+        xmlMapper.registerModule(new JodaModule());
 
+        serializeListDemo(jsonMapper, "json");
+        deserializeListDemo(jsonMapper, "json");
+        serializeListDemo(xmlMapper, "xml");
+        deserializeListDemo(xmlMapper, "xml");
     }
 }
 
