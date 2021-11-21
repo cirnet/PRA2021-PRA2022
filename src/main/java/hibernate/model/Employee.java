@@ -1,6 +1,8 @@
 package hibernate.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -24,6 +26,9 @@ public class Employee {
 
     @Column(name = "PESEL", nullable = false, unique = true)
     private int pesel;
+
+    @ElementCollection
+    private List<String> phones = new ArrayList<>();
 
     public Employee() {}
 
@@ -65,6 +70,14 @@ public class Employee {
 
     public void setPesel(int pesel) {
         this.pesel = pesel;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 
     public static Employee copyEmployee(Employee emp) {

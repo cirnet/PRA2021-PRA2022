@@ -5,6 +5,7 @@ import hibernate.queries.Queries;
 import org.hibernate.Session;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -46,13 +47,18 @@ class Manager {
 
             System.out.println("Employee " + employee.getId() + " " + employee.getFirstName() + employee.getLastName());
 
-            employee.setLastName("NowakPRE" + new Random().nextInt()); // No SQL needed
+            employee.setPhones(Arrays.asList("109212","12121"));
+
+            session.flush();// flush changes to DB
+
             changeFirstGuyToNowak(session);// Flush executed
+            employee.setLastName("NowakSEC" + new Random().nextInt()); // No SQL needed
+
 
             //Commit transaction to database
             session.getTransaction().commit();
 
-            session.refresh(employee);
+            session.refresh(employee); // force select on DB
 
             System.out.println("Done");
 
@@ -62,7 +68,7 @@ class Manager {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
         } finally {
-            entityManagerFactory.close();
+
         }
 
     }
