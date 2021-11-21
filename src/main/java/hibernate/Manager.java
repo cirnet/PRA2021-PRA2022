@@ -47,7 +47,7 @@ class Manager {
             System.out.println("Employee " + employee.getId() + " " + employee.getFirstName() + employee.getLastName());
 
             employee.setLastName("NowakPRE" + new Random().nextInt()); // No SQL needed
-            changeFirstGuyToNowak(session);
+            changeFirstGuyToNowak(session);// Flush executed
 
             //Commit transaction to database
             session.getTransaction().commit();
