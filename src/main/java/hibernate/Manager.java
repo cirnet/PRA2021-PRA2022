@@ -42,13 +42,17 @@ class Manager {
             } else {
                 System.out.println("Found " + employee);
             }
+            //session.refresh(employee); //Error object not in DB yet!!
 
             System.out.println("Employee " + employee.getId() + " " + employee.getFirstName() + employee.getLastName());
 
+            employee.setLastName("NowakPRE" + new Random().nextInt()); // No SQL needed
             changeFirstGuyToNowak(session);
 
             //Commit transaction to database
             session.getTransaction().commit();
+
+            session.refresh(employee);
 
             System.out.println("Done");
 
@@ -74,6 +78,7 @@ class Manager {
 
     static void changeFirstGuyToNowak(Session session) {
 
+        // Force synchronization
         List<Employee> employees = new Queries(session).getEmployeeByName("Polak");
 
         employees.get(0).setLastName("NowakPRE" + new Random().nextInt());
