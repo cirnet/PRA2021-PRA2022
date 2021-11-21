@@ -1,9 +1,7 @@
 package hibernate.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 @Entity
@@ -29,6 +27,18 @@ public class Employee {
 
     @ElementCollection
     private List<String> phones = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="address_id")
+    Set<Address> address;
+
+    public Set<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(Set<Address> address) {
+        this.address = address;
+    }
 
     public Employee() {}
 
@@ -82,11 +92,24 @@ public class Employee {
 
     public static Employee copyEmployee(Employee emp) {
         Employee person = new Employee();
-        //person.setAddress(emp.getAddress());
-        person.setLastName(emp.getLastName());
+        person.setAddress(new HashSet<>(emp.getAddress()));
+        person.setLastName(emp.getLastName() + new Random().nextInt());
         person.setFirstName(emp.getFirstName());
         person.setPesel(new Random().nextInt());
         person.setSalary(emp.getSalary());
         return person;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", salary=" + salary +
+                ", pesel=" + pesel +
+                ", phones=" + phones +
+                ", address=" + address +
+                '}';
     }
 }
