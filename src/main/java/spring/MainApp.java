@@ -3,6 +3,8 @@ package spring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import spring.services.Service;
+import spring.services.ServiceImpl;
 
 @SpringBootApplication
 public class MainApp {
@@ -21,5 +23,16 @@ public class MainApp {
         System.out.println(config.getEnvironment());
         System.out.println(config.getServers().length);
 
+        Printer printer = context.getBean(Printer.class);
+        printer.sendMessage();
+        helloWorld.setMessage("new Message");
+        printer.sendMessage();
+
+        Service service  = (Service) context.getBean(ServiceImpl.class);
+        service.print();
+
+        // Generate NPE
+        Printer p2 = new Printer();
+        p2.sendMessage();
     }
 }
